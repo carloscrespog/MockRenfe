@@ -1,0 +1,49 @@
+<head><script type="text/javascript"
+    src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> 
+  </script></head>
+  <body>
+<input type="text" id="txtOrigen" placeholder="Origen:" value="Madrid" />
+<input type="text" id="txtDestino" placeholder="Destino:" value="Cuenca"/>   
+<input type="text" id="txtYear" placeholder="Year" value="2012"/>
+<input type="text" id="txtMonth" placeholder="Month" value="04"/>
+<input type="text" id="txtDay" placeholder="Day" value="30"/>   
+<input type="button" id="btnGetName" value="Buscar en renfe" />
+<div id="resultado">Soy un div inutil!</div>
+<div id="resultadoJson">Soy otro div inutil!</div>
+<script src="http://localhost:1337/socket.io/socket.io.js"></script>
+<script>
+var socket = io.connect("http://localhost:1337"),
+  mOrigen = document.getElementById("txtOrigen"),
+  mDestino = document.getElementById("txtDestino"),
+  mYear = document.getElementById("txtYear"),
+  mMonth = document.getElementById("txtMonth"),
+  mDay = document.getElementById("txtDay"),
+  btn = document.getElementById("btnGetName");
+
+// handle button click
+btn.addEventListener("click", function() {
+  // publish setName event with data
+  socket.emit("travel", {origen: mOrigen.value, destino: mDestino.value
+  						, year: mYear.value, month: mMonth.value,
+  							day: mDay.value});
+  return false;
+});
+
+// listen for nameSet event
+var string=" ";
+socket.on("query", function(data) {
+ //$('#resultado').html((data.mresponse).val());
+ for( variable in data.mresponse){
+  var i=data.mresponse[variable];
+  string+=(i+"<br>"); //por alguna extraña razon no funciona concat
+  
+ }
+ 
+ //var StringJson=("<br>"+data.jsonResponse);
+  $('#resultado').html(string);
+  $('#resultadoJson').html(JSON.stringify(data.jsonResponse));
+  //window.location.href = data.renfeQuery //redireccionar
+  
+});
+</script>
+</body>
