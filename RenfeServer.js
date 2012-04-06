@@ -33,9 +33,6 @@ io.sockets.on("connection", function(socket) {
   
   socket.on("travel", function(data) {
     var renfeQuery = generateQuery(data.origen,data.destino,data.year,data.month,data.day);
-    //renfeQuery += "\n"+data.origen + " - " + data.destino;
-    //renfeQuery+="\n"+ data.year + "-" + data.month + "-" + data.day;
-   // var response="wololo";
     var trenJson = {
       "tipo":null,
       "ruta":{
@@ -131,10 +128,6 @@ io.sockets.on("connection", function(socket) {
       socket.emit("query", {renfeQuery: renfeQuery,mresponse:trenes,jsonResponse:trenesJson});
 });
 
-
-
-
-    
   });
 });
 
